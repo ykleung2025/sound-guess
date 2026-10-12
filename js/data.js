@@ -102,9 +102,10 @@
       '<path d="M48 96 h32" fill="none" ' + stroke + '/>'
     ),
     triangle: svg(
-      '<path d="M64 28 L104 100 H24 Z" fill="#e7f5ff" ' + stroke + '/>' +
-      '<path d="M78 78 l22 18" fill="none" ' + stroke + '/>' +
-      '<circle cx="102" cy="98" r="6" fill="#ced4da" ' + stroke + '/>'
+      '<path d="M64 30 L100 98 H28 Z" fill="#dee2e6" ' + stroke + '/>' +
+      '<path d="M64 48 L86 88 H42 Z" fill="none" stroke="#868e96" stroke-width="4"/>' +
+      '<path d="M82 70 l18 22" fill="none" ' + stroke + '/>' +
+      '<circle cx="102" cy="94" r="6" fill="#ced4da" ' + stroke + '/>'
     ),
     castanet: svg(
       '<ellipse cx="46" cy="70" rx="22" ry="28" fill="#d97706" ' + stroke + ' transform="rotate(-18 46 70)"/>' +
