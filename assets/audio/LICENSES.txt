@@ -1,0 +1,62 @@
+聲音小偵探 · 音檔授權
+全部檔案都在本資料夾，課堂播放唔使連去外站。
+為方便小一聽得清楚，每段都截到 3 秒以內，並調整過響度。木魚把一下敲擊重複三次。
+
+動物叫聲
+- cat.mp3 貓
+  作者 freemaster2。CC0 1.0。
+  Wikimedia Commons：File:Meow of a Siamese cat - freemaster2.wav
+  https://commons.wikimedia.org/wiki/File:Meow_of_a_Siamese_cat_-_freemaster2.wav
+- dog.mp3 狗
+  作者 abhisheky948。CC0 1.0。Freesound 625501「Animal Dog Bark And Growl 01」
+  https://freesound.org/people/abhisheky948/sounds/625501/
+- cow.mp3 牛
+  作者 spurioustransients。CC0 1.0。Freesound 513565「Cow moo #8」（截取其中一聲）
+  https://freesound.org/people/spurioustransients/sounds/513565/
+- chicken.mp3 雞
+  作者 arelitron。CC0 1.0。Freesound 582624「Rooster crow」
+  https://freesound.org/people/arelitron/sounds/582624/
+- bird.mp3 鳥
+  作者 LilMati。CC0 1.0。Freesound 714572「Super Cute Bird Tweets - Short Chirp SFX」
+  https://freesound.org/people/LilMati/sounds/714572/
+- pig.mp3 豬
+  作者 TheKingOfGeeks360。CC0 1.0。Freesound 842313「Swine - Pig; Dinosaur-like Grunt」
+  https://freesound.org/people/TheKingOfGeeks360/sounds/842313/
+- sheep.mp3 羊
+  作者 Chipsplease。CC0 1.0。Freesound 669765「Sheep baa」
+  https://freesound.org/people/Chipsplease/sounds/669765/
+- horse.mp3 馬
+  作者 Hü。公有領域（Public domain）。
+  Wikimedia Commons：File:Wiehern.ogg
+  https://commons.wikimedia.org/wiki/File:Wiehern.ogg
+
+課堂樂器
+- drum.mp3 鼓
+  作者 TheEndOfACycle。CC0 1.0。Freesound 673516「Flat & Fat Snare Drum Hit」
+  https://freesound.org/people/TheEndOfACycle/sounds/673516/
+- bell.mp3 鈴
+  作者 brittgym98。CC0 1.0。Freesound 533561「Plastic Handbell: G」
+  https://freesound.org/people/brittgym98/sounds/533561/
+- triangle.mp3 三角鐵
+  作者 andrescompovigo。CC0 1.0。Freesound 219639「triangle.wav」（截取幾下）
+  https://freesound.org/people/andrescompovigo/sounds/219639/
+- castanet.mp3 響板
+  作者 loganzsound。CC0 1.0。Freesound 774639「Toy Castanets」
+  https://freesound.org/people/loganzsound/sounds/774639/
+- xylophone.mp3 木琴
+  作者 Aeonemi。CC0 1.0。Freesound 184012「Xylophone tones.mp3」
+  https://freesound.org/people/Aeonemi/sounds/184012/
+- melodica.mp3 口風琴
+  作者 ari__inez。CC0 1.0。Freesound 833954「melodica melody」
+  https://freesound.org/people/ari__inez/sounds/833954/
+- piano.mp3 鋼琴
+  作者 mamax。CC0 1.0。Freesound 44355「piano melody 3.mp3」
+  https://freesound.org/people/mamax/sounds/44355/
+- woodfish.mp3 木魚
+  作者 jonopodmore。CC0 1.0。Freesound 607215「Mokugyo.wav」
+  原錄音一下很短，本站重複三次。
+  https://freesound.org/people/jonopodmore/sounds/607215/
+
+CC0 1.0：可以複製、修改、公開播放，包括課堂同商業用途，唔使申請。本站仍然列明出處。
+公有領域：作者已放棄版權。
+Freesound 檔案用咗網站上的 CC0 預覽 mp3，再截短同轉檔，方便學校防火牆同離線使用。
