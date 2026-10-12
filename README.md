@@ -61,7 +61,7 @@
 
 CC0 可以自由使用同改。公有領域的馬嘶聲由作者 Hü 放出。Freesound 的檔用咗 CC0 預覽 mp3，再截短、調響度、轉成 mp3。木魚原錄音一下很短，所以重複三次。牛、三角鐵等只留最清楚的一段。
 
-圖是網頁入面的簡單 SVG，用 `overflow: visible` 完整顯示，沒有裁切。
+圖是網頁入面的側面插圖（動物同課堂樂器），用 `overflow: visible` 完整顯示，沒有裁切。
 
 ## 點樣打開
 
@@ -83,4 +83,4 @@ python3 -m http.server 47321
 2. 打開倉庫 Settings → Pages。
 3. Source 選 Deploy from a branch，Branch 選 `main`，資料夾選 `/ (root)`，然後 Save。
 
-幾分鐘後可以開 <https://ykleung2025.github.io/sound-guess/>。樣式同程式帶有 `?v=1`，方便更新後少被舊快取擋住。
+幾分鐘後可以開 <https://ykleung2025.github.io/sound-guess/>。樣式、插圖同程式帶有 `?v=2`，方便更新後少被舊快取擋住。

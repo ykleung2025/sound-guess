@@ -122,8 +122,30 @@
     var i;
     var shown = Math.min(count, 8);
     for (i = 0; i < shown; i += 1) text += "★";
+    if (!shown) text = "☆";
     if (count > 8) text += "…";
-    return text || "☆";
+    return text;
+  }
+
+  function setTagline(text) {
+    var el = document.getElementById("tagline");
+    if (el) el.textContent = text;
+  }
+
+  function setHeader(html) {
+    var el = document.getElementById("header-controls");
+    if (el) el.innerHTML = html || "";
+  }
+
+  function heroRow(ids) {
+    var html = "";
+    var i;
+    var item;
+    for (i = 0; i < ids.length; i += 1) {
+      item = itemById(ids[i]);
+      if (item) html += item.svg;
+    }
+    return '<span class="cat-heroes" aria-hidden="true">' + html + "</span>";
   }
 
   function setScreen(name) {
@@ -280,6 +302,7 @@
     var locked = state.status === "correct" || state.status === "revealed";
     var classes = "choice";
     var badge = "";
+    var stage = option.category === "instruments" ? "stage-instruments" : "stage-animals";
     if (state.wrongIds[option.id]) classes += " is-wrong";
     if (item && option.id === item.id && (state.status === "correct" || state.status === "revealed")) {
       classes += state.status === "correct" ? " is-correct" : " is-answer";
@@ -291,7 +314,7 @@
       '<div class="' + classes + '">' +
         '<button type="button" class="choice-hit" data-action="choose" data-id="' + option.id + '"' +
           (locked ? " disabled" : "") + ' aria-label="' + option.name + '">' +
-          '<span class="choice-art">' + option.svg + "</span>" +
+          '<span class="stage ' + stage + '"><span class="choice-art">' + option.svg + "</span></span>" +
           '<span class="choice-name">' + option.name + "</span>" +
         "</button>" +
         '<div class="choice-row">' +
@@ -302,11 +325,14 @@
     );
   }
 
+  function previewStrip() {
+    return '<div class="preview" aria-hidden="true">' + heroRow(["cat", "horse", "cow", "drum", "xylophone", "bell"]).replace("cat-heroes", "preview-row") + "</div>";
+  }
+
   function renderHome() {
-    return (
-      '<p class="eyebrow">小學一年級 · 老師操作</p>' +
-      '<h1>聲音小偵探</h1>' +
-      '<p class="subtitle">估估聲</p>' +
+    setTagline("老師播聲 → 學生估 → 老師確認");
+    setHeader("");
+    var intro =
       '<ol class="flow">' +
         '<li><b>1</b>老師播聲</li>' +
         '<li class="arrow" aria-hidden="true">→</li>' +
@@ -314,63 +340,67 @@
         '<li class="arrow" aria-hidden="true">→</li>' +
         '<li><b>3</b>老師確認</li>' +
       "</ol>" +
-      '<p class="lead">老師按掣播放聲音。學生聽完，舉手或者大聲講答案。老師再確認。學生唔使自己撳選項。</p>' +
-      (state.screen === "home"
-        ? '<button type="button" class="btn btn-xl" data-action="start">開始上課</button>'
-        : renderPick())
+      '<p class="lead">老師播聲。學生聽完，舉手或者大聲講。老師再確認。學生唔使自己撳。</p>' +
+      previewStrip();
+    if (state.screen === "home") {
+      return '<div class="home-stack">' + intro +
+        '<button type="button" class="btn btn-xl" data-action="start">開始上課</button></div>';
+    }
+    return intro + renderPick();
+  }
+
+  function catButton(cat, extraClass, countLabel) {
+    var info = data.categories[cat];
+    return (
+      '<button type="button" class="btn cat ' + extraClass + '" data-action="pick" data-cat="' + cat + '">' +
+        heroRow(info.heroes) +
+        "<strong>" + info.name + "</strong>" +
+        "<em>" + info.blurb + " · " + countLabel + "</em>" +
+      "</button>"
     );
   }
 
   function renderPick() {
-    var animals = data.categories.animals;
-    var instruments = data.categories.instruments;
     var animalCount = poolFor("animals").length;
     var instrumentCount = poolFor("instruments").length;
     return (
       '<div class="panel">' +
-        '<h2>揀一類</h2>' +
-        '<p class="hint">第一次按下已經開啟聲音。入題之後，再按「再聽一次」先會播聲。</p>' +
+        "<h2>揀一類</h2>" +
+        '<p class="hint">入題之後，按金色大掣「再聽一次」先播聲。</p>' +
         '<div class="cats">' +
-          '<button type="button" class="btn cat cat-animals" data-action="pick" data-cat="animals"><strong>' + animals.name + "</strong><span>" + animals.blurb + " · " + animalCount + " 題</span></button>" +
-          '<button type="button" class="btn cat cat-instruments" data-action="pick" data-cat="instruments"><strong>' + instruments.name + "</strong><span>" + instruments.blurb + " · " + instrumentCount + " 題</span></button>" +
-          '<button type="button" class="btn cat cat-mix" data-action="pick" data-cat="mix"><strong>混合</strong><span>兩類一齊 · ' + (animalCount + instrumentCount) + " 題</span></button>" +
+          catButton("animals", "cat-animals", animalCount + " 題") +
+          catButton("instruments", "cat-instruments", instrumentCount + " 題") +
+          catButton("mix", "cat-mix", (animalCount + instrumentCount) + " 題") +
         "</div>" +
       "</div>"
     );
   }
 
   function renderRound() {
-    var item = currentItem();
     var fb = feedbackModel();
     var total = state.queue.length;
     var last = state.index >= total - 1;
     var cards = "";
     var i;
     for (i = 0; i < state.options.length; i += 1) cards += choiceCard(state.options[i]);
-    var scoreBlock = state.scoreOn
-      ? '<span class="stars" aria-hidden="true">' + stars(state.correctCount) + '</span><span class="score-num">' + state.correctCount + "／" + total + "</span>"
-      : "";
+    setTagline(categoryName(state.category) + " · 第 " + (state.index + 1) + "／" + total + " 題");
+    setHeader(
+      '<button type="button" class="btn btn-quiet" data-action="home">返回首頁</button>' +
+      (state.scoreOn ? '<span class="btn score-pill" aria-label="分數">⭐ ' + state.correctCount + "／" + total + "</span>" : "") +
+      '<button type="button" class="btn" data-action="toggle-score" aria-pressed="' + (state.scoreOn ? "true" : "false") + '">計分：' + (state.scoreOn ? "開" : "關") + "</button>"
+    );
     return (
-      '<div class="topbar">' +
-        '<button type="button" class="btn btn-quiet btn-score" data-action="home">返回首頁</button>' +
-        '<div><h2>' + categoryName(state.category) + '</h2><div class="progress">第 ' + (state.index + 1) + "／" + total + " 題</div></div>" +
-        '<div class="score-cluster">' +
-          scoreBlock +
-          '<button type="button" class="btn btn-score" data-action="toggle-score" aria-pressed="' + (state.scoreOn ? "true" : "false") + '">計分：' + (state.scoreOn ? "開" : "關") + "</button>" +
-        "</div>" +
-      "</div>" +
       '<div class="feedback ' + fb.cls + '" role="status" aria-live="polite"><strong>' + fb.title + "</strong><p>" + fb.body + "</p></div>" +
       '<button type="button" class="btn btn-replay' + (state.playing ? " is-playing" : "") + '" id="replay" data-action="replay">再聽一次</button>' +
-      '<p class="hint">答案選擇（投影俾學生睇，老師先點選）</p>' +
+      '<p class="hint">四幅圖俾學生睇。老師先點。</p>' +
       '<div class="choices">' + cards + "</div>" +
-      '<p class="hint">老師操作</p>' +
       '<div class="teacher">' +
         '<button type="button" class="btn btn-good" data-action="correct"' + (state.status === "correct" || state.status === "revealed" ? " disabled" : "") + ">同學答啱喇</button>" +
         '<button type="button" class="btn btn-retry" data-action="retry"' + (state.status === "correct" || state.status === "revealed" ? " disabled" : "") + ">再估一次</button>" +
         '<button type="button" class="btn btn-quiet" data-action="reveal"' + (state.status === "correct" ? " disabled" : "") + ">" + (state.status === "revealed" ? "隱藏答案" : "顯示答案") + "</button>" +
         '<button type="button" class="btn btn-next" data-action="next">' + (last ? "完成今堂" : "下一題") + "</button>" +
       "</div>" +
-      '<details class="help"><summary>鍵盤</summary><p>空白鍵：再聽一次。C：同學答啱喇。R：再估一次。A：顯示或隱藏答案。N：下一題。</p></details>'
+      '<details class="help"><summary>鍵盤</summary><p>空白鍵再聽一次。C 同學答啱喇。R 再估一次。A 顯示或隱藏答案。N 下一題。</p></details>'
     );
   }
 
@@ -379,6 +409,8 @@
     var score = state.scoreOn
       ? '<div class="done-score">' + state.correctCount + "／" + total + "</div><p>同學答啱 " + state.correctCount + " 題。</p><p class=\"stars\">" + stars(state.correctCount) + "</p>"
       : "<p>今堂 " + total + " 題都聽完喇。</p>";
+    setTagline("今堂完成");
+    setHeader('<button type="button" class="btn btn-quiet" data-action="home">返回首頁</button>');
     return (
       '<div class="panel done">' +
         "<h2>今堂完成</h2>" +
@@ -418,7 +450,7 @@
     window.setTimeout(function () { root.innerHTML = ""; }, 1400);
   }
 
-  app.addEventListener("click", function (event) {
+  document.addEventListener("click", function (event) {
     var button = event.target.closest("[data-action]");
     if (!button || button.disabled) return;
     var action = button.getAttribute("data-action");
