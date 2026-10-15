@@ -238,6 +238,7 @@
 
   function toggleReveal() {
     if (state.status === "correct") return;
+    if (state.status === "revealed" && speech) speech.quiet();
     state.status = state.status === "revealed" ? "ready" : "revealed";
     render();
   }
@@ -297,36 +298,60 @@
     return { cls: "", title: "老師播聲", body: "按金色大掣「再聽一次」。學生聽完先估。" };
   }
 
-  function choiceCard(option) {
+  var OPTION_LETTERS = ["A", "B", "C", "D"];
+
+  function answerOpen() {
+    return state.status === "correct" || state.status === "revealed";
+  }
+
+  function choiceCard(option, index) {
     var item = currentItem();
-    var locked = state.status === "correct" || state.status === "revealed";
+    var open = answerOpen();
     var classes = "choice";
     var badge = "";
-    var stage = option.category === "instruments" ? "stage-instruments" : "stage-animals";
+    var letter = OPTION_LETTERS[index] || String(index + 1);
+    var secretLabel = "選項 " + letter;
     if (state.wrongIds[option.id]) classes += " is-wrong";
-    if (item && option.id === item.id && (state.status === "correct" || state.status === "revealed")) {
+    if (item && option.id === item.id && open) {
       classes += state.status === "correct" ? " is-correct" : " is-answer";
       badge = '<span class="badge">' + (state.status === "correct" ? "答啱" : "答案") + "</span>";
     } else if (state.wrongIds[option.id]) {
       badge = '<span class="badge">再估</span>';
     }
+
+    var face;
+    var speak = "";
+    if (open) {
+      var stage = option.category === "instruments" ? "stage-instruments" : "stage-animals";
+      face =
+        '<span class="stage ' + stage + '"><span class="choice-art">' + option.svg + "</span></span>" +
+        '<span class="choice-name">' + option.name + "</span>";
+      speak = '<button type="button" class="speak-btn js-option-speak" data-speak="' + option.name + '" data-idle-label="朗讀" aria-label="朗讀">朗讀</button>';
+    } else {
+      classes += " is-secret";
+      face =
+        '<span class="stage stage-mystery"><span class="mystery-mark" aria-hidden="true">?</span></span>' +
+        '<span class="choice-name">' + secretLabel + "</span>";
+    }
+
     return (
       '<div class="' + classes + '">' +
         '<button type="button" class="choice-hit" data-action="choose" data-id="' + option.id + '"' +
-          (locked ? " disabled" : "") + ' aria-label="' + option.name + '">' +
-          '<span class="stage ' + stage + '"><span class="choice-art">' + option.svg + "</span></span>" +
-          '<span class="choice-name">' + option.name + "</span>" +
+          (open ? " disabled" : "") + ' aria-label="' + (open ? option.name : secretLabel) + '">' +
+          face +
         "</button>" +
-        '<div class="choice-row">' +
-          badge +
-          '<button type="button" class="speak-btn js-option-speak" data-speak="' + option.name + '" data-idle-label="朗讀" aria-label="朗讀：' + option.name + '">朗讀</button>' +
-        "</div>" +
+        ((badge || speak) ? '<div class="choice-row">' + badge + speak + "</div>" : "") +
       "</div>"
     );
   }
 
   function previewStrip() {
-    return '<div class="preview" aria-hidden="true">' + heroRow(["cat", "horse", "cow", "drum", "xylophone", "bell"]).replace("cat-heroes", "preview-row") + "</div>";
+    return (
+      '<div class="preview" aria-hidden="true">' +
+        heroRow(["cat", "dog", "cow", "chicken"]).replace("cat-heroes", "preview-row") +
+        heroRow(["drum", "bell", "triangle", "castanet"]).replace("cat-heroes", "preview-row") +
+      "</div>"
+    );
   }
 
   function renderHome() {
@@ -382,7 +407,7 @@
     var last = state.index >= total - 1;
     var cards = "";
     var i;
-    for (i = 0; i < state.options.length; i += 1) cards += choiceCard(state.options[i]);
+    for (i = 0; i < state.options.length; i += 1) cards += choiceCard(state.options[i], i);
     setTagline(categoryName(state.category) + " · 第 " + (state.index + 1) + "／" + total + " 題");
     setHeader(
       '<button type="button" class="btn btn-quiet" data-action="home">返回首頁</button>' +
@@ -392,7 +417,7 @@
     return (
       '<div class="feedback ' + fb.cls + '" role="status" aria-live="polite"><strong>' + fb.title + "</strong><p>" + fb.body + "</p></div>" +
       '<button type="button" class="btn btn-replay' + (state.playing ? " is-playing" : "") + '" id="replay" data-action="replay">再聽一次</button>' +
-      '<p class="hint">四幅圖俾學生睇。老師先點。</p>' +
+      '<p class="hint">四張神秘卡。學生估完，老師先點。答啱或者顯示答案，先見到圖同名。</p>' +
       '<div class="choices">' + cards + "</div>" +
       '<div class="teacher">' +
         '<button type="button" class="btn btn-good" data-action="correct"' + (state.status === "correct" || state.status === "revealed" ? " disabled" : "") + ">同學答啱喇</button>" +
