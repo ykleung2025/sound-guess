@@ -76,27 +76,16 @@
     if (Ctx) {
       if (!audioCtx) audioCtx = new Ctx();
       try { audioCtx.resume(); } catch (err) { /* ignore */ }
-    }
-    var primer = getAudio(data.items[0].src);
-    var previous = primer.volume;
-    primer.volume = 0.001;
-    var result;
-    try {
-      result = primer.play();
-    } catch (err) {
-      primer.volume = previous || 1;
-      return;
-    }
-    var finish = function () {
+      // 靜音解鎖：唔播任何叫聲，避免一開就喵一聲
       try {
-        primer.pause();
-        primer.currentTime = 0;
+        var buffer = audioCtx.createBuffer(1, 1, 22050);
+        var source = audioCtx.createBufferSource();
+        source.buffer = buffer;
+        source.connect(audioCtx.destination);
+        source.start(0);
       } catch (err) { /* ignore */ }
-      primer.volume = previous || 1;
-      state.unlocked = true;
-    };
-    if (result && result.then) result.then(finish).catch(finish);
-    else finish();
+    }
+    state.unlocked = true;
     var n;
     for (n = 0; n < data.items.length; n += 1) getAudio(data.items[n].src);
   }
@@ -167,8 +156,39 @@
     state.queue = shuffle(poolFor(category));
     state.index = 0;
     state.correctCount = 0;
+    state.screen = "preview";
+    render();
+  }
+
+  function startGuessing() {
+    if (speech) speech.quiet();
+    stopAudio();
+    state.previewId = null;
+    state.playing = false;
     state.screen = "round";
     beginRound();
+  }
+
+  function playPreview(id) {
+    var item = itemById(id);
+    if (!item) return;
+    unlockAudio();
+    if (speech) speech.quiet();
+    stopAudio();
+    var audio = getAudio(item.src);
+    try { audio.currentTime = 0; } catch (err) { /* ignore */ }
+    state.previewId = id;
+    state.playing = true;
+    var token = ++playToken;
+    render();
+    var pending = audio.play();
+    var done = function () {
+      if (token !== playToken) return;
+      state.playing = false;
+      render();
+    };
+    if (pending && pending.then) pending.then(function () {}).catch(done);
+    audio.onended = done;
   }
 
   function beginRound() {
@@ -340,13 +360,13 @@
     setHeader("");
     var intro =
       '<ol class="flow">' +
-        '<li><b>1</b>老師播聲</li>' +
+        '<li><b>1</b>先聽聲</li>' +
         '<li class="arrow" aria-hidden="true">→</li>' +
-        '<li><b>2</b>學生估</li>' +
+        '<li><b>2</b>老師播聲估</li>' +
         '<li class="arrow" aria-hidden="true">→</li>' +
         '<li><b>3</b>老師確認</li>' +
       "</ol>" +
-      '<p class="lead">老師播聲。學生聽完，舉手或者大聲講。老師再確認。學生唔使自己撳。</p>' +
+      '<p class="lead">先點圖案聽各樣聲音。之後老師播聲，學生估，老師確認。</p>' +
       previewStrip();
     if (state.screen === "home") {
       return '<div class="home-stack">' + intro +
@@ -377,6 +397,44 @@
           catButton("animals", "cat-animals", animalCount + " 題") +
           catButton("instruments", "cat-instruments", instrumentCount + " 題") +
           catButton("mix", "cat-mix", (animalCount + instrumentCount) + " 題") +
+        "</div>" +
+      "</div>"
+    );
+  }
+
+  function previewCard(option) {
+    var stage = option.category === "instruments" ? "stage-instruments" : "stage-animals";
+    var playing = state.playing && state.previewId === option.id;
+    return (
+      '<div class="choice' + (playing ? " is-preview-playing" : "") + '">' +
+        '<button type="button" class="choice-hit" data-action="preview-play" data-id="' + option.id + '" aria-label="聽：' + option.name + '">' +
+          '<span class="stage ' + stage + '"><span class="choice-art">' + option.svg + "</span></span>" +
+          '<span class="choice-name">' + option.name + "</span>" +
+        "</button>" +
+        '<div class="choice-row">' +
+          '<span class="badge">' + (playing ? "播放中" : "點選聽") + "</span>" +
+        "</div>" +
+      "</div>"
+    );
+  }
+
+  function renderPreview() {
+    var pool = poolFor(state.category);
+    var cards = "";
+    var i;
+    for (i = 0; i < pool.length; i += 1) cards += previewCard(pool[i]);
+    setTagline(categoryName(state.category) + " · 先聽一聽");
+    setHeader(
+      '<button type="button" class="btn btn-quiet" data-action="home">返回首頁</button>' +
+      '<button type="button" class="btn btn-quiet" data-action="pick-screen">返去揀類</button>'
+    );
+    return (
+      '<div class="panel preview-panel">' +
+        "<h2>先聽清楚各樣聲音</h2>" +
+        '<p class="hint">點選圖案播聲，等大家認得每樣先。聽完按「開始估」。</p>' +
+        '<div class="choices">' + cards + "</div>" +
+        '<div class="done-actions" style="margin-top:16px">' +
+          '<button type="button" class="btn btn-xl" data-action="start-guess">開始估</button>' +
         "</div>" +
       "</div>"
     );
@@ -433,6 +491,7 @@
   function render() {
     var html;
     if (state.screen === "round") html = renderRound();
+    else if (state.screen === "preview") html = renderPreview();
     else if (state.screen === "done") html = renderDone();
     else html = renderHome();
     app.innerHTML = html;
@@ -462,6 +521,8 @@
     var action = button.getAttribute("data-action");
     if (action === "start") startClass();
     else if (action === "pick") startCategory(button.getAttribute("data-cat"));
+    else if (action === "preview-play") playPreview(button.getAttribute("data-id"));
+    else if (action === "start-guess") startGuessing();
     else if (action === "replay") playCurrent();
     else if (action === "choose") choose(button.getAttribute("data-id"));
     else if (action === "correct") markCorrect();
