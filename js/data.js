@@ -1,5 +1,5 @@
 (function () {
-  var V = "5";
+  var V = "6";
 
   function src(file) {
     return "assets/audio/" + file + "?v=" + V;
