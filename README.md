@@ -30,7 +30,7 @@
 
 **動物叫聲**（4 題）：貓、狗、牛、雞。
 
-**課堂樂器**（4 題）：鼓、鈴、三角鐵、響板。
+**課堂樂器**（4 題）：鼓、鈴、三角鈴、響板。
 
 **混合**（8 題）：兩類一齊練習。每一題的四個選擇仍然屬同一類，避免動物同樂器撈亂。
 
@@ -54,14 +54,14 @@
 | `horse.mp3` | 馬 | Hü | 公有領域 | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Wiehern.ogg) |
 | `drum.mp3` | 鼓 | TheEndOfACycle | CC0 1.0 | [Freesound 673516](https://freesound.org/people/TheEndOfACycle/sounds/673516/) |
 | `bell.mp3` | 鈴 | brittgym98 | CC0 1.0 | [Freesound 533561](https://freesound.org/people/brittgym98/sounds/533561/) |
-| `triangle.mp3` | 三角鐵 | andrescompovigo | CC0 1.0 | [Freesound 219639](https://freesound.org/people/andrescompovigo/sounds/219639/) |
+| `triangle.mp3` | 三角鈴 | Joseph SARDIN / BigSoundBank | CC0 1.0 | [Triangle #1](https://bigsoundbank.com/triangle-1-s1687.html) |
 | `castanet.mp3` | 響板 | loganzsound | CC0 1.0 | [Freesound 774639](https://freesound.org/people/loganzsound/sounds/774639/) |
 | `xylophone.mp3` | 木琴 | Aeonemi | CC0 1.0 | [Freesound 184012](https://freesound.org/people/Aeonemi/sounds/184012/) |
 | `melodica.mp3` | 口風琴 | ari__inez | CC0 1.0 | [Freesound 833954](https://freesound.org/people/ari__inez/sounds/833954/) |
 | `piano.mp3` | 鋼琴 | mamax | CC0 1.0 | [Freesound 44355](https://freesound.org/people/mamax/sounds/44355/) |
 | `woodfish.mp3` | 木魚 | jonopodmore | CC0 1.0 | [Freesound 607215](https://freesound.org/people/jonopodmore/sounds/607215/) |
 
-CC0 可以自由使用同改。公有領域的馬嘶聲由作者 Hü 放出。Freesound 的檔用咗 CC0 預覽 mp3，再截短、調響度、轉成 mp3。木魚原錄音一下很短，所以重複三次。牛、三角鐵等只留最清楚的一段。
+CC0 可以自由使用同改。公有領域的馬嘶聲由作者 Hü 放出。Freesound 的檔用咗 CC0 預覽 mp3，再截短、調響度、轉成 mp3。木魚原錄音一下很短，所以重複三次。牛、三角鈴等只留最清楚的一段。
 
 圖是網頁入面的側面插圖（動物同課堂樂器），用 `overflow: visible` 完整顯示，沒有裁切。
 
