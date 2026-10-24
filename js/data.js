@@ -1,5 +1,5 @@
 (function () {
-  var V = "6";
+  var V = "7";
 
   function src(file) {
     return "assets/audio/" + file + "?v=" + V;
@@ -16,7 +16,7 @@
     { id: "chicken", name: "雞", category: "animals", file: "chicken.mp3" },
     { id: "drum", name: "鼓", category: "instruments", file: "drum.mp3" },
     { id: "bell", name: "鈴", category: "instruments", file: "bell.mp3" },
-    { id: "triangle", name: "三角鐵", category: "instruments", file: "triangle.mp3" },
+    { id: "triangle", name: "三角鈴", category: "instruments", file: "triangle.mp3" },
     { id: "castanet", name: "響板", category: "instruments", file: "castanet.mp3" }
   ];
 
@@ -38,7 +38,7 @@
       instruments: {
         id: "instruments",
         name: "課堂樂器",
-        blurb: "鼓、鈴、三角鐵、響板",
+        blurb: "鼓、鈴、三角鈴、響板",
         heroes: ["drum", "bell", "triangle"]
       },
       mix: {

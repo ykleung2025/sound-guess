@@ -38,10 +38,10 @@
 - bell.mp3 鈴
   作者 brittgym98。CC0 1.0。Freesound 533561「Plastic Handbell: G」
   https://freesound.org/people/brittgym98/sounds/533561/
-- triangle.mp3 三角鐵
-  Source: SFXMint「Triangle Hit 01」（轉碼／正規化後）
+- triangle.mp3 三角鈴
+  Source: BigSoundBank「Triangle #1」（轉碼／正規化後）
   License: CC0 1.0
-  https://sfxmint.com/sounds/triangle-hit-01
+  https://bigsoundbank.com/triangle-1-s1687.html
 - castanet.mp3 響板
   作者 loganzsound。CC0 1.0。Freesound 774639「Toy Castanets」
   https://freesound.org/people/loganzsound/sounds/774639/
