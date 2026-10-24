@@ -4,9 +4,10 @@
 
 動物叫聲
 - cat.mp3 貓
-  作者 freemaster2。CC0 1.0。
-  Wikimedia Commons：File:Meow of a Siamese cat - freemaster2.wav
-  https://commons.wikimedia.org/wiki/File:Meow_of_a_Siamese_cat_-_freemaster2.wav
+  Source: SFXMint「Insistent Cat Meowing 62」（轉碼／正規化後）
+  License: CC0 1.0
+  https://sfxmint.com/sounds/animal-cat-meow-62
+
 - dog.mp3 狗
   作者 abhisheky948。CC0 1.0。Freesound 625501「Animal Dog Bark And Growl 01」
   https://freesound.org/people/abhisheky948/sounds/625501/

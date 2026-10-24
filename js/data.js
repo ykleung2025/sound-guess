@@ -1,8 +1,12 @@
 (function () {
-  var V = "4";
+  var V = "5";
 
   function src(file) {
     return "assets/audio/" + file + "?v=" + V;
+  }
+
+  function icon(id) {
+    return '<img class="item-art" src="assets/icons/' + id + '.png?v=' + V + '" alt="" width="160" height="120" decoding="async">';
   }
 
   var items = [
@@ -19,7 +23,7 @@
   var i;
   for (i = 0; i < items.length; i += 1) {
     items[i].src = src(items[i].file);
-    items[i].svg = window.SOUND_ART[items[i].id];
+    items[i].svg = icon(items[i].id);
   }
 
   window.SOUND_DATA = {
